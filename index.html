@@ -606,6 +606,7 @@ textarea.ri { resize:vertical; }
 </section>
 
 <!-- ═══════ RSVP ═══════ -->
+
 <section id="rsvp" class="rsvp-sec">
   <div class="rsvp-bi"></div>
   <div class="rsvp-bo"></div>
@@ -619,13 +620,29 @@ textarea.ri { resize:vertical; }
     <div class="row justify-content-center">
       <div class="col-md-8 col-lg-6">
         <div class="rsvp-bx">
-          <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeQ1RYYT_PR-Qsv_YuP0QargkQxkpk7GsQG7Y11LC4qEG4AJA/viewform?embedded=true" width="550" height="600" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+          <form id="rsvpForm">
+         
+            <div class="mb-3"><label class="rl" for="rn">Full Name *</label><input type="text" id="rn" name="name" class="ri" placeholder="Your full name" required/></div>
+            <div class="mb-3"><label class="rl" for="re">Email *</label><input type="email" id="re" name="email" class="ri" placeholder="your@email.com" required/></div>
+            <div class="mb-3"><label class="rl" for="rp">Phone</label><input type="tel" id="rp" name="phone" class="ri" placeholder="+91 XXXXX XXXXX"/></div>
+            <div class="mb-3"><label class="rl" for="rg">Guests</label><select id="rg" name="guests" class="ri"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4+</option></select></div>
+            <div class="mb-3">
+              <label class="rl">Attending? *</label>
+              <div class="att-g">
+                <label class="att-o"><input type="radio" name="att" value="yes" required/> <span>Yes, Happily! 🎉</span></label>
+                <label class="att-o"><input type="radio" name="att" value="no"/> <span>Regretfully, No</span></label>
+              </div>
+            </div>
+            <div class="mb-3"><label class="rl" for="rm">Message / Blessings</label><textarea id="rm" name="message" class="ri" rows="3" placeholder="Your heartfelt wishes for the couple..."></textarea></div>
+            <button type="button" class="btn-rs" onclick="submitRSVP()">Send RSVP &nbsp;<i class="fas fa-paper-plane"></i></button>
+          </form>
         </div>
       </div>
     </div>
   </div>
 </section>
 
+   
 
 
 <!-- ═══════ CONTACT ═══════ -->
@@ -681,6 +698,60 @@ textarea.ri { resize:vertical; }
 
 <a href="#hero" class="stb" title="Back to top"><i class="fas fa-chevron-up"></i></a>
 
+<script>
+  async function submitRSVP() {
+  
+      const formData = new FormData();
+  
+      formData.append(
+          "entry.336123765",
+          document.getElementById("rn").value
+      );
+  
+      formData.append(
+          "entry.317226636",
+          document.getElementById("re").value
+      );
+  
+      formData.append(
+          "entry.206466304",
+          document.getElementById("rp").value
+      );
+  
+      formData.append(
+          "entry.475378463",
+          document.getElementById("rg").value
+      );
+  
+      const attending =
+          document.querySelector('input[name="att"]:checked');
+  
+      formData.append(
+          "entry.557563113",
+          attending?.value === "yes"
+              ? "Yes, Happily! 🎉"
+              : "Regretfully, No"
+      );
+  
+      formData.append(
+          "entry.995539465",
+          document.getElementById("rm").value
+      );
+  
+      await fetch(
+          "https://docs.google.com/forms/d/e/1FAIpQLSe8Yr7vwFtXEwgQZ1SrlVxHoUFGZ-Tga05dhTSILrIYOWXlSQ/formResponse",
+          {
+              method: "POST",
+              mode: "no-cors",
+              body: formData
+          }
+      );
+  
+      alert("🎉 Thank you for your RSVP!");
+  
+      document.getElementById("rsvpForm").reset();
+  }
+  </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
